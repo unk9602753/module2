@@ -1,0 +1,45 @@
+package com.epam.esm.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum ErrorCode {
+    CODE_40004("exception.InvalidDefinitionException"),
+    CODE_40005("exception.SQLIntegrityConstraintViolationException"),
+    CODE_40006("exception.BadSqlGrammarException"),
+    CODE_40007("exception.TypeMismatchException"),
+    CODE_40008("exception.NoSuchRequestHandlingMethodException"),
+    CODE_40009("exception.MissingServletRequestParameterException"),
+    CODE_40010("exception.MethodArgumentNotValidException"),
+    CODE_40011("exception.HttpRequestMethodNotSupportedException"),
+    CODE_40012("exception.HttpMessageNotWritableException"),
+    CODE_40013("exception.HttpMessageNotReadableException"),
+    CODE_40014("exception.HttpMediaTypeNotSupportedException"),
+    CODE_40015("exception.HttpMediaTypeNotAcceptableException"),
+    CODE_40016("exception.ConversionNotSupportedException"),
+    CODE_40017("exception.bind"),
+    CODE_40001("exception.update.certificate"),
+    CODE_40002("exception.create.certificate"),
+    CODE_40003("exception.find.certificate"),
+    CODE_40018("exception.id.exist"),
+    CODE_40019("exception.no.values.present"),
+    CODE_40020("exception.delete.certificate"),
+    CODE_40021("exception.incorrect.search.criteria"),
+    CODE_40022("ex.method.not.support"),
+    CODE_40023("exception.syntax.query"),
+    CODE_40024("wrong.direction.sorting"),
+    CODE_40025("exception.parse.json"),
+    CODE_40026("exception.find.tag"),
+    CODE_40027("exception.syntax.query"),
+    CODE_40028("exception.create.tag"),
+    CODE_40029("exception.delete.tag");
+
+    String message;
+
+    public static int getCode(ErrorCode errorCode){
+        String name = errorCode.name();
+        return Integer.parseInt(name.substring(name.indexOf("_")+1));
+    }
+}
