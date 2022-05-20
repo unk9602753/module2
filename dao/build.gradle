@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'com.epam'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':entity')
+}
+
+test {
+    useJUnitPlatform()
+}
