@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.epam'
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':dao')
+    implementation project(':entity')
+    implementation project(':service')
+}
+
+test {
+    useJUnitPlatform()
+}
