@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.epam.esm'
+group 'com.epam.esm.dao'
 version '0.0.1'
 
 repositories {
