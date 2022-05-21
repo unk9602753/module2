@@ -42,10 +42,9 @@ public class GiftCertificateController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<GiftCertificateDto> getAllCertificatesByCriteria(@RequestParam(value = "sort_direction", required = false, defaultValue = "asc") String direction,
-                                                                 @RequestParam(value = "sort_criteria", required = false) String criteria,
+    public List<GiftCertificateDto> getAllCertificatesByCriteria(@RequestParam(value = "sort_criteria", required = false) String sortCriteria,
                                                                  @RequestParam(value = "search_criteria", required = false, defaultValue = "certificate") String searchCriteria,
                                                                  @RequestParam(value = "search_name", required = false, defaultValue = "") String name) {
-        return giftCertificateService.findByCriteriaAndSort(searchCriteria,name,criteria,direction);
+        return giftCertificateService.findByCriteriaAndSort(searchCriteria,name,sortCriteria);
     }
 }

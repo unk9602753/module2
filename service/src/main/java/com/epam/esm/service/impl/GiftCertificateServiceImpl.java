@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,14 +22,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateDao giftCertificateDao;
-
     private final TagDao tagDao;
 
     @Override
     public void delete(long id) {
         int statement = giftCertificateDao.remove(id);
         if (statement == 0) {
-            System.out.println(statement);
             throw new ServiceException("exception.delete.certificate", id);
         }
     }
@@ -54,9 +53,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDto> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria, String sortDirection) {
+    public List<GiftCertificateDto> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria) {
         if (!(searchCriteria.equals("tag") || searchCriteria.equals("certificate"))) throw new ServiceException("exception.incorrect.search.criteria");
-        List<GiftCertificate> giftCertificates = giftCertificateDao.findByCriteriaAndSort(searchCriteria, searchName, sortCriteria, sortDirection);
+        List<GiftCertificate> giftCertificates = giftCertificateDao.findByCriteriaAndSort(searchCriteria, searchName, sortCriteria);
         if (giftCertificates.isEmpty()) throw new ServiceException("exception.not.found", searchCriteria);
         return mapToListOfDtos(giftCertificates);
     }
