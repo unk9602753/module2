@@ -23,6 +23,7 @@ public class TagController {
     }
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Tag> getTagById(@PathVariable long id) {
         Optional<Tag> optTag = tagService.find(id);
         return new ResponseEntity<>(optTag.get(), HttpStatus.OK);

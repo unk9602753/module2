@@ -17,6 +17,7 @@ public class GiftCertificateController {
     private final GiftCertificateService giftCertificateService;
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<GiftCertificateDto> getCertificateById(@PathVariable long id) {
         Optional<GiftCertificateDto> optDto = giftCertificateService.find(id);
         return new ResponseEntity<>(optDto.get(), HttpStatus.OK);
@@ -42,9 +43,9 @@ public class GiftCertificateController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<GiftCertificateDto> getAllCertificatesByCriteria(@RequestParam(value = "sort_criteria", required = false) String sortCriteria,
+    public List<GiftCertificateDto> getAllCertificatesByCriteria(@RequestParam(value = "search_name", required = false, defaultValue = "") String name,
                                                                  @RequestParam(value = "search_criteria", required = false, defaultValue = "certificate") String searchCriteria,
-                                                                 @RequestParam(value = "search_name", required = false, defaultValue = "") String name) {
+                                                                 @RequestParam(value = "sort_criteria", required = false) String sortCriteria) {
         return giftCertificateService.findByCriteriaAndSort(searchCriteria,name,sortCriteria);
     }
 }
