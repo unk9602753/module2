@@ -1,8 +1,6 @@
 package com.epam.esm.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;

@@ -2,8 +2,10 @@ package com.epam.esm.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-import lombok.*;
 
 import java.time.LocalDateTime;
 

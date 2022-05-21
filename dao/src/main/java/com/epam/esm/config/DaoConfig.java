@@ -3,7 +3,10 @@ package com.epam.esm.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,6 +43,7 @@ public class DaoConfig {
     public DataSource dataSource(HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
+
     @Bean
     @Profile("prod")
     public DataSource embeddedDataSource() throws IOException {

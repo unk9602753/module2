@@ -6,7 +6,8 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.epam.esm.dao.mapper.ColumnName.*;
+import static com.epam.esm.dao.mapper.ColumnName.TAG_NAME;
+import static com.epam.esm.dao.mapper.ColumnName.TAG_ID;
 
 public class TagRowMapper implements RowMapper<Tag> {
     @Override
