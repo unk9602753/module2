@@ -52,99 +52,99 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(InvalidDefinitionException.class)
     public ResponseEntity<ResponseException> handleInvalidDefinitionException(InvalidDefinitionException e) {
-        ResponseException re = errorBody(e, CODE_40004.getMessage(), getCode(CODE_40004));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40004.getMessage(), getCode(CODE_40004));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<ResponseException> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
-        ResponseException re = errorBody(e, CODE_40005.getMessage(), HttpServletResponse.SC_BAD_REQUEST, getCause(e.getMessage()));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40005.getMessage(), HttpServletResponse.SC_BAD_REQUEST, getCause(e.getMessage()));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadSqlGrammarException.class)
     public ResponseEntity<ResponseException> handleBadSqlGrammarException(BadSqlGrammarException e) {
-        ResponseException re = errorBody(e, CODE_40006.getMessage(), getCode(CODE_40006), getCause(e.getMessage()));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40006.getMessage(), getCode(CODE_40006), getCause(e.getMessage()));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ResponseException> handleServiceException(ServiceException e) {
-        ResponseException re = errorBody(e, e.getMessage(), HttpServletResponse.SC_BAD_REQUEST, e.getId(), e.getConcreteMessage());
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, e.getMessage(), HttpServletResponse.SC_BAD_REQUEST, e.getId(), e.getConcreteMessage());
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ResponseException> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
-        ResponseException re = errorBody(e, CODE_40013.getMessage(), getCode(CODE_40013));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40013.getMessage(), getCode(CODE_40013));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ResponseException> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e) {
-        ResponseException re = errorBody(e, CODE_40011.getMessage(), getCode(CODE_40011));
-        return new ResponseEntity<>(re, HttpStatus.METHOD_NOT_ALLOWED);
+        ResponseException responseException = errorBody(e, CODE_40011.getMessage(), getCode(CODE_40011));
+        return new ResponseEntity<>(responseException, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ResponseException> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
-        ResponseException re = errorBody(e, CODE_40014.getMessage(), getCode(CODE_40014));
-        return new ResponseEntity<>(re, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        ResponseException responseException = errorBody(e, CODE_40014.getMessage(), getCode(CODE_40014));
+        return new ResponseEntity<>(responseException, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ResponseException> handleMissingServletRequestParameter(MissingServletRequestParameterException e) {
-        ResponseException re = errorBody(e, CODE_40009.getMessage(), getCode(CODE_40009));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40009.getMessage(), getCode(CODE_40009));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
 
     @ExceptionHandler(TypeMismatchException.class)
     public ResponseEntity<ResponseException> handleTypeMismatch(TypeMismatchException e) {
-        ResponseException re = errorBody(e, CODE_40007.getMessage(), getCode(CODE_40007));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40007.getMessage(), getCode(CODE_40007));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotWritableException.class)
     public ResponseEntity<ResponseException> handleHttpMessageNotWritable(HttpMessageNotWritableException e) {
-        ResponseException re = errorBody(e, CODE_40013.getMessage(), getCode(CODE_40013));
-        return new ResponseEntity<>(re, HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseException responseException = errorBody(e, CODE_40013.getMessage(), getCode(CODE_40013));
+        return new ResponseEntity<>(responseException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MissingServletRequestPartException.class)
     public ResponseEntity<ResponseException> handleMissingServletRequestPart(MissingServletRequestPartException e) {
-        ResponseException re = errorBody(e, CODE_40009.getMessage(), getCode(CODE_40009));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40009.getMessage(), getCode(CODE_40009));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ResponseException> handleBindException(BindException e) {
-        ResponseException re = errorBody(e, CODE_40017.getMessage(), getCode(CODE_40017));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40017.getMessage(), getCode(CODE_40017));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConversionNotSupportedException.class)
     public ResponseEntity<ResponseException> handleConversionNotSupportedException(ConversionNotSupportedException e) {
-        ResponseException re = errorBody(e, CODE_40016.getMessage(), getCode(CODE_40016));
-        return new ResponseEntity<>(re, HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseException responseException = errorBody(e, CODE_40016.getMessage(), getCode(CODE_40016));
+        return new ResponseEntity<>(responseException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(JsonParseException.class)
     public ResponseEntity<ResponseException> handleJsonParseException(JsonParseException e) {
-        ResponseException re = errorBody(e, "exception.parse.json", HttpServletResponse.SC_BAD_REQUEST);
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, "exception.parse.json", HttpServletResponse.SC_BAD_REQUEST);
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<ResponseException> handleEmptyResultDataAccessException(EmptyResultDataAccessException e) {
-        ResponseException re = errorBody(e, e.getMessage(), HttpServletResponse.SC_NOT_FOUND);
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, e.getMessage(), HttpServletResponse.SC_NOT_FOUND);
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ResponseException> handleNoSuchElementException(NoSuchElementException e) {
-        ResponseException re = errorBody(e, CODE_40019.getMessage(), getCode(CODE_40019));
-        return new ResponseEntity<>(re, HttpStatus.BAD_REQUEST);
+        ResponseException responseException = errorBody(e, CODE_40019.getMessage(), getCode(CODE_40019));
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
     private String getCause(String message) {
@@ -152,9 +152,9 @@ public class ExceptionHandlerController {
     }
 
     private ResponseException errorBody(Throwable e, String messageCode, int code, String... args) {
-        ResponseException re = new ResponseException();
-        re.setCode(code);
-        re.setMessage(String.format(Translator.toLocale(messageCode), args));
-        return re;
+        ResponseException responseException = new ResponseException();
+        responseException.setCode(code);
+        responseException.setMessage(String.format(Translator.toLocale(messageCode), args));
+        return responseException;
     }
 }
