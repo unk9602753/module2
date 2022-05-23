@@ -52,10 +52,10 @@ public class WebConfig extends AcceptHeaderLocaleResolver implements WebMvcConfi
 
     @Bean
     public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource rs = new ResourceBundleMessageSource();
-        rs.setBasename("messages");
-        rs.setDefaultEncoding(StandardCharsets.UTF_8.name());
-        rs.setUseCodeAsDefaultMessage(true);
-        return rs;
+        ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
+        resourceBundleMessageSource.setBasename("messages");
+        resourceBundleMessageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
+        resourceBundleMessageSource.setUseCodeAsDefaultMessage(true);
+        return resourceBundleMessageSource;
     }
 }
