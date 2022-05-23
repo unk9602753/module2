@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -53,7 +54,7 @@ public class WebConfig extends AcceptHeaderLocaleResolver implements WebMvcConfi
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource rs = new ResourceBundleMessageSource();
         rs.setBasename("messages");
-        rs.setDefaultEncoding("UTF-8");
+        rs.setDefaultEncoding(StandardCharsets.UTF_8.name());
         rs.setUseCodeAsDefaultMessage(true);
         return rs;
     }
