@@ -10,5 +10,5 @@ public interface GiftCertificateDao extends Dao<GiftCertificate> {
 
     long removeTagToGiftCertificate(long giftCertificateId);
 
-    List<GiftCertificate> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria);
+    List<GiftCertificate> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteriaAndSortDirection);
 }

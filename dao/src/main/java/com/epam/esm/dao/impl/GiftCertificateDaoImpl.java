@@ -88,11 +88,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria) {
+    public List<GiftCertificate> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteriaAndSortDirection) {
         if (searchCriteria.equals("tag")) {
-            return jdbcTemplate.query(SELECT_BY_TAG_NAME + "ORDER BY " + sortCriteria, new GiftCertificateRowMapper(), searchName);
+            return jdbcTemplate.query(SELECT_BY_TAG_NAME + "ORDER BY " + sortCriteriaAndSortDirection, new GiftCertificateRowMapper(), searchName);
         }
-        return jdbcTemplate.query(SELECT_BY_PART_OF_NAME + " ORDER BY " + sortCriteria, new GiftCertificateRowMapper(), "%" + searchName + "%");
+        return jdbcTemplate.query(SELECT_BY_PART_OF_NAME + " ORDER BY " + sortCriteriaAndSortDirection, new GiftCertificateRowMapper(), "%" + searchName + "%");
     }
 
     @Override

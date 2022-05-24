@@ -13,6 +13,7 @@ repositories {
 allprojects {
     apply plugin: 'java'
     dependencies {
+        implementation 'commons-validator:commons-validator:1.7'
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
         implementation 'com.fasterxml.jackson.core:jackson-core:2.13.2'

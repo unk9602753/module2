@@ -3,6 +3,7 @@ package com.epam.esm.controller;
 import com.epam.esm.entity.GiftCertificateDto;
 import com.epam.esm.service.GiftCertificateService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +27,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GiftCertificateController {
     private final GiftCertificateService giftCertificateService;
+
+    private final UrlValidator urlValidator;
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -54,7 +59,7 @@ public class GiftCertificateController {
     @ResponseStatus(HttpStatus.OK)
     public List<GiftCertificateDto> getAllCertificatesByCriteria(@RequestParam(value = "search_name", required = false, defaultValue = "") String name,
                                                                  @RequestParam(value = "search_criteria", required = false, defaultValue = "certificate") String searchCriteria,
-                                                                 @RequestParam(value = "sort_criteria", required = false) String sortCriteria) {
+                                                                 @RequestParam(value = "sort", required = false, defaultValue = "id") String sortCriteria) {
         return giftCertificateService.findByCriteriaAndSort(searchCriteria, name, sortCriteria);
     }
 }

@@ -55,7 +55,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public List<GiftCertificateDto> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria) {
         if (!(searchCriteria.equals("tag") || searchCriteria.equals("certificate"))) throw new ServiceException("exception.incorrect.search.criteria");
-        List<GiftCertificate> giftCertificates = giftCertificateDao.findByCriteriaAndSort(searchCriteria, searchName, sortCriteria);
+        String sortCriteriaAndSortDirection = sortCriteria.replace("-", " ");
+        List<GiftCertificate> giftCertificates = giftCertificateDao.findByCriteriaAndSort(searchCriteria, searchName, sortCriteriaAndSortDirection);
         if (giftCertificates.isEmpty()) throw new ServiceException("exception.not.found", searchCriteria);
         return mapToListOfDtos(giftCertificates);
     }
