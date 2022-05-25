@@ -1,6 +1,7 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.TagDao;
+import com.epam.esm.entity.ErrorCode;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ServiceException;
 import com.epam.esm.service.TagService;
@@ -22,7 +23,7 @@ public class TagServiceImpl implements TagService {
         if (optTag.isPresent()) {
             return optTag;
         }
-        throw new ServiceException("exception.find.tag", id);
+        throw new ServiceException(ErrorCode.CODE_40026, id);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class TagServiceImpl implements TagService {
     public void delete(long id) {
         int statement = tagDao.remove(id);
         if (statement == 0) {
-            throw new ServiceException("exception.delete.tag", id);
+            throw new ServiceException(ErrorCode.CODE_40029, id);
         }
     }
 
@@ -43,7 +44,7 @@ public class TagServiceImpl implements TagService {
     public void create(Tag tag) {
         boolean isTagExist = tagDao.findByName(tag.getName()).isPresent();
         if (!isTagExist) tagDao.insert(tag);
-        throw new ServiceException("exception.create.tag");
+        throw new ServiceException(ErrorCode.CODE_40028);
     }
 }
 

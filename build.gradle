@@ -13,7 +13,6 @@ repositories {
 allprojects {
     apply plugin: 'java'
     dependencies {
-        implementation 'commons-validator:commons-validator:1.7'
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
         implementation 'com.fasterxml.jackson.core:jackson-core:2.13.2'
@@ -24,6 +23,7 @@ allprojects {
         implementation 'org.springframework:spring-context:5.3.18'
         implementation 'org.springframework:spring-webmvc:5.3.19'
         implementation 'org.springframework:spring-web:5.3.19'
+        implementation 'org.apache.commons:commons-lang3:3.12.0'
 
         compileOnly "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.4"
         compileOnly 'org.projectlombok:lombok:1.18.22'

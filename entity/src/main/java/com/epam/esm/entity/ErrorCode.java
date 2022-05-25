@@ -27,14 +27,14 @@ public enum ErrorCode {
     CODE_40019("exception.no.values.present"),
     CODE_40020("exception.delete.certificate"),
     CODE_40021("exception.incorrect.search.criteria"),
-    CODE_40022("ex.method.not.support"),
+    CODE_40022("exception.method.not.support"),
     CODE_40023("exception.syntax.query"),
-    CODE_40024("wrong.direction.sorting"),
     CODE_40025("exception.parse.json"),
     CODE_40026("exception.find.tag"),
     CODE_40027("exception.syntax.query"),
     CODE_40028("exception.create.tag"),
-    CODE_40029("exception.delete.tag");
+    CODE_40029("exception.delete.tag"),
+    CODE_40030("exception.not.found");
 
     String message;
 

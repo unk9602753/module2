@@ -12,8 +12,6 @@ repositories {
 dependencies {
     implementation project(':dao')
     implementation project(':entity')
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
-
 }
 
 test {

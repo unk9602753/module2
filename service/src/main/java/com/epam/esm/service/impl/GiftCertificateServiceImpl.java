@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
+import com.epam.esm.entity.ErrorCode;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.GiftCertificateDto;
 import com.epam.esm.entity.Tag;
@@ -28,7 +29,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public void delete(long id) {
         int statement = giftCertificateDao.remove(id);
         if (statement == 0) {
-            throw new ServiceException("exception.delete.certificate", id);
+            throw new ServiceException(ErrorCode.CODE_40020, id);
         }
     }
 
@@ -42,7 +43,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             giftCertificateDto.setTags(allTagsByCertificateId);
             return Optional.of(giftCertificateDto);
         } else {
-            throw new ServiceException("exception.find.certificate", id);
+            throw new ServiceException(ErrorCode.CODE_40003, id);
         }
     }
 
@@ -54,10 +55,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public List<GiftCertificateDto> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria) {
-        if (!(searchCriteria.equals("tag") || searchCriteria.equals("certificate"))) throw new ServiceException("exception.incorrect.search.criteria");
+        if (!(searchCriteria.equals("tag") || searchCriteria.equals("certificate"))) throw new ServiceException(ErrorCode.CODE_40021,searchCriteria);
         String sortCriteriaAndSortDirection = sortCriteria.replace("-", " ");
         List<GiftCertificate> giftCertificates = giftCertificateDao.findByCriteriaAndSort(searchCriteria, searchName, sortCriteriaAndSortDirection);
-        if (giftCertificates.isEmpty()) throw new ServiceException("exception.not.found", searchCriteria);
+        if (giftCertificates.isEmpty()) throw new ServiceException(ErrorCode.CODE_40030, searchCriteria);
         return mapToListOfDtos(giftCertificates);
     }
 
@@ -71,7 +72,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             long id = giftCertificateDao.insert(giftCertificate).longValue();
             linkCertificateWithTags(tags, id);
         } else {
-            throw new ServiceException("exception.create.certificate");
+            throw new ServiceException(ErrorCode.CODE_40002);
         }
     }
 
@@ -88,7 +89,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             giftCertificateDao.removeTagToGiftCertificate(id);
             linkCertificateWithTags(tags, id);
         } else {
-            throw new ServiceException("exception.update.certificate", id);
+            throw new ServiceException(ErrorCode.CODE_40001, id);
         }
     }
 

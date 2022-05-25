@@ -1,29 +1,31 @@
 package com.epam.esm.exception;
 
+import com.epam.esm.entity.ErrorCode;
 import lombok.Getter;
 
 public class ServiceException extends RuntimeException {
     private long id;
     private String concreteMessage;
-    private String message;
 
-    public ServiceException(String message, long id) {
-        this.message = message;
+    private ErrorCode errorCode;
+
+    public ServiceException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public ServiceException(ErrorCode errorCode, long id){
+        this.errorCode=errorCode;
         this.id = id;
     }
 
-    public ServiceException(String message) {
-        this.message = message;
-    }
-
-    public ServiceException(String message, String concreteMessage) {
-        this.message = message;
+    public ServiceException(ErrorCode errorCode, String concreteMessage){
+        this.errorCode=errorCode;
         this.concreteMessage = concreteMessage;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 
     public String getId() {

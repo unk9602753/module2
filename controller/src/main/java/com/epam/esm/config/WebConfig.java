@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -58,11 +57,5 @@ public class WebConfig extends AcceptHeaderLocaleResolver implements WebMvcConfi
         resourceBundleMessageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
         resourceBundleMessageSource.setUseCodeAsDefaultMessage(true);
         return resourceBundleMessageSource;
-    }
-
-    @Bean
-    public UrlValidator urlValidator(){
-        UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
-        return urlValidator;
     }
 }
