@@ -3,7 +3,7 @@ package com.epam.esm.exception;
 import com.epam.esm.entity.ErrorCode;
 import lombok.Getter;
 
-public class ServiceException extends RuntimeException {
+public class ServiceException extends Exception {
     private long id;
     private String concreteMessage;
 

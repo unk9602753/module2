@@ -9,6 +9,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ServiceException;
 import com.epam.esm.service.GiftCertificateService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final TagDao tagDao;
 
     @Override
+    @SneakyThrows
     public void delete(long id) {
         int statement = giftCertificateDao.remove(id);
         if (statement == 0) {
@@ -35,6 +37,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional
+    @SneakyThrows
     public Optional<GiftCertificateDto> find(long id) {
         Optional<GiftCertificate> giftCertificate = giftCertificateDao.find(id);
         List<Tag> allTagsByCertificateId = tagDao.findAllTagsByCertificateId(id);
@@ -54,6 +57,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
+    @SneakyThrows
     public List<GiftCertificateDto> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria) {
         if (!(searchCriteria.equals("tag") || searchCriteria.equals("certificate"))) throw new ServiceException(ErrorCode.CODE_40021,searchCriteria);
         String sortCriteriaAndSortDirection = sortCriteria.replace("-", " ");
@@ -64,6 +68,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional
+    @SneakyThrows
     public void create(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = new GiftCertificate(giftCertificateDto);
         List<Tag> tags = giftCertificateDto.getTags();
@@ -78,6 +83,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional
+    @SneakyThrows
     public void update(GiftCertificateDto patch, long id) {
         Optional<GiftCertificate> optGift = giftCertificateDao.find(id);
         GiftCertificate certificate = new GiftCertificate(patch);

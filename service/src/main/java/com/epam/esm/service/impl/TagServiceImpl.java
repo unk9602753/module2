@@ -6,6 +6,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ServiceException;
 import com.epam.esm.service.TagService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class TagServiceImpl implements TagService {
     private final TagDao tagDao;
 
     @Override
+    @SneakyThrows
     public Optional<Tag> find(long id) {
         Optional<Tag> optTag = tagDao.find(id);
         if (optTag.isPresent()) {
@@ -32,6 +34,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @SneakyThrows
     public void delete(long id) {
         int statement = tagDao.remove(id);
         if (statement == 0) {
@@ -41,6 +44,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     @Transactional
+    @SneakyThrows
     public void create(Tag tag) {
         boolean isTagExist = tagDao.findByName(tag.getName()).isPresent();
         if (!isTagExist) tagDao.insert(tag);
