@@ -32,9 +32,9 @@ public class DaoConfig {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(environment.getProperty("url"));
         hikariConfig.setUsername(environment.getProperty("username"));
-        hikariConfig.setPassword(environment.getProperty("pw"));
-        hikariConfig.setDriverClassName(environment.getProperty("cn"));
-        hikariConfig.setMaximumPoolSize(Integer.parseInt(environment.getProperty("ps")));
+        hikariConfig.setPassword(environment.getProperty("password"));
+        hikariConfig.setDriverClassName(environment.getProperty("className"));
+        hikariConfig.setMaximumPoolSize(Integer.parseInt(environment.getProperty("poolSize")));
         return hikariConfig;
     }
 
@@ -51,8 +51,8 @@ public class DaoConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(environment.getProperty("url"));
         dataSource.setUsername(environment.getProperty("username"));
-        dataSource.setPassword(environment.getProperty("pw"));
-        dataSource.setDriverClassName(environment.getProperty("cn"));
+        dataSource.setPassword(environment.getProperty("password"));
+        dataSource.setDriverClassName(environment.getProperty("className"));
         return dataSource;
     }
 

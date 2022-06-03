@@ -14,7 +14,9 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.anyLong;
 
 class TagServiceImplTest {
 
