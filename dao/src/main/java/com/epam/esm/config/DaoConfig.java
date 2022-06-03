@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,8 +28,24 @@ public class DaoConfig {
 
     @Bean
     @Profile("dev")
-    public HikariConfig hikariConfig() throws IOException {
+    public DataSource devDataSource() throws IOException {
         environment.getPropertySources().addFirst(new ResourcePropertySource("classpath:dev-connection.properties"));
+        return new HikariDataSource(hikariConfig());
+    }
+
+    @Bean
+    @Profile("prod")
+    public DataSource prodDataSource() throws IOException {
+        environment.getPropertySources().addFirst(new ResourcePropertySource("classpath:prod-connection.properties"));
+        return new HikariDataSource(hikariConfig());
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    private HikariConfig hikariConfig(){
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(environment.getProperty("url"));
         hikariConfig.setUsername(environment.getProperty("username"));
@@ -36,28 +53,5 @@ public class DaoConfig {
         hikariConfig.setDriverClassName(environment.getProperty("className"));
         hikariConfig.setMaximumPoolSize(Integer.parseInt(environment.getProperty("poolSize")));
         return hikariConfig;
-    }
-
-    @Bean
-    @Profile("dev")
-    public DataSource dataSource(HikariConfig hikariConfig) {
-        return new HikariDataSource(hikariConfig);
-    }
-
-    @Bean
-    @Profile("prod")
-    public DataSource embeddedDataSource() throws IOException {
-        environment.getPropertySources().addFirst(new ResourcePropertySource("classpath:prod-connection.properties"));
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl(environment.getProperty("url"));
-        dataSource.setUsername(environment.getProperty("username"));
-        dataSource.setPassword(environment.getProperty("password"));
-        dataSource.setDriverClassName(environment.getProperty("className"));
-        return dataSource;
-    }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
     }
 }
