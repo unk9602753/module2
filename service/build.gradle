@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation project(':dao')
     implementation project(':entity')
+    implementation project(':exception')
 }
 
 test {

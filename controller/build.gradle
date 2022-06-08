@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation project(':entity')
     implementation project(':service')
+    implementation project(':exception')
 }
 
 test {
