@@ -11,13 +11,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 
 @Configuration
 @ComponentScan("com.epam.esm")
+@PropertySource("classpath:${spring.profiles.active}-connection.properties")
 public class DaoConfig {
     private ConfigurableEnvironment environment;
 
@@ -27,25 +27,12 @@ public class DaoConfig {
     }
 
     @Bean
-    @Profile("dev")
-    public DataSource devDataSource() throws IOException {
-        environment.getPropertySources().addFirst(new ResourcePropertySource("classpath:dev-connection.properties"));
-        return new HikariDataSource(hikariConfig());
+    public DataSource dataSource(HikariConfig hikariConfig){
+        return new HikariDataSource(hikariConfig);
     }
 
     @Bean
-    @Profile("prod")
-    public DataSource prodDataSource() throws IOException {
-        environment.getPropertySources().addFirst(new ResourcePropertySource("classpath:prod-connection.properties"));
-        return new HikariDataSource(hikariConfig());
-    }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-    }
-
-    private HikariConfig hikariConfig(){
+    public HikariConfig hikariConfig() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(environment.getProperty("url"));
         hikariConfig.setUsername(environment.getProperty("username"));
@@ -53,5 +40,10 @@ public class DaoConfig {
         hikariConfig.setDriverClassName(environment.getProperty("className"));
         hikariConfig.setMaximumPoolSize(Integer.parseInt(environment.getProperty("poolSize")));
         return hikariConfig;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }
