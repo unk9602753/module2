@@ -2,41 +2,49 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.isA;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.anyLong;
 
+@ExtendWith(MockitoExtension.class)
 class TagServiceImplTest {
-
     @Mock
-    TagDao tagDao;
+    private TagDao tagDao;
     @InjectMocks
-    TagServiceImpl service;
+    private TagServiceImpl service;
 
-    List<Tag> tags;
-
+    List<Tag> tags =  Arrays.asList(
+            new Tag(1, "tag1"),
+            new Tag(2, "tag2"),
+            new Tag(3, "tag3"),
+            new Tag(4, "tag4"),
+            new Tag(5, "tag5")
+    );
+    
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        tags = Arrays.asList(
-                new Tag(1, "tag1"),
-                new Tag(2, "tag2"),
-                new Tag(3, "tag3"),
-                new Tag(4, "tag4"),
-                new Tag(5, "tag5")
-        );
+        service=new TagServiceImpl(tagDao);
+    }
+
+    @AfterEach
+    public void checkMocks(){
+        verifyNoMoreInteractions(tagDao);
     }
 
     @Test
