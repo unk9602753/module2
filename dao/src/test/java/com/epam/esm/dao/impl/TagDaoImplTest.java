@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -18,77 +17,75 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DaoConfig.class)
-@ActiveProfiles("dev")
 class TagDaoImplTest {
 
     @Autowired
-    TagDao tagDao;
+    private TagDao tagDao;
 
     @Autowired
-    GiftCertificateDao giftCertificateDao;
+    private GiftCertificateDao giftCertificateDao;
 
-    List<Tag> tags;
+    private List<Tag> tags;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         tags = tagDao.findAll();
     }
 
     @Test
-    void insert() {
-        Tag tag = new Tag(1L,"tag");
+    public void insert() {
+        Tag tag = new Tag(2,"tag31");
         Number id = tagDao.insert(tag);
         assertTrue(id.intValue() > 0);
     }
 
     @Test
-    void wrongInsert() {
+    public void wrongInsert() {
         Tag tag = new Tag(1L,null);
         assertThrows(DataIntegrityViolationException.class,()-> tagDao.insert(tag));
     }
 
     @Test
-    void find() {
+    public void find() {
         Optional<Tag> tag = tagDao.find(tags.get(0).getId());
         assertTrue(tag.isPresent());
     }
 
     @Test
-    void findAll() {
+    public void findAll() {
         assertTrue(!tags.isEmpty());
     }
 
     @Test
-    void remove() {
+    public void remove() {
         int countOfColumns = tagDao.remove(tags.get(0).getId());
         assertTrue(countOfColumns>0);
     }
 
     @Test
-    void removeWrongId(){
+    public void removeWrongId(){
         int countOfColumns = tagDao.remove(-1);
         assertTrue(countOfColumns == 0);
     }
 
     @Test
-    void findAllTagsByCertificateId() {
+    public void findAllTagsByCertificateId() {
         long certificateId = giftCertificateDao.findAll().get(0).getId();
         List<Tag> allTagsByCertificateId = tagDao.findAllTagsByCertificateId(certificateId);
         assertTrue(allTagsByCertificateId != null);
     }
 
     @Test
-    void findByName() {
+    public void findByName() {
         Optional<Tag> tag = tagDao.findByName(tags.get(0).getName());
         assertTrue(tag.isPresent());
     }
 
     @Test
-    void findByWrongName(){
+    public void findByWrongName(){
         Optional<Tag> tag = tagDao.findByName("-------------");
         assertTrue(tag.isEmpty());
     }

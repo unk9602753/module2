@@ -31,11 +31,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String UPDATE = """
             UPDATE gift_certificate SET name=? ,description=?,price=?,duration=?,create_date=?,last_update_date=?
             WHERE id=?""";
-    private static final String SELECT_BY_PART_OF_NAME = "SELECT id,name,description,price,duration,create_date,last_update_date FROM gift_certificate WHERE name LIKE ?";
+    private static final String SELECT_BY_PART_OF_NAME = "SELECT id,name,description,price,duration,create_date,last_update_date FROM gift_certificate WHERE name LIKE ? ORDER BY ";
     private static final String REMOVE = "DELETE FROM gift_certificate WHERE id=?;";
     private static final String SELECT_BY_TAG_NAME = """
             SELECT id,name ,description,price,duration,create_date,last_update_date FROM gift_certificate WHERE id IN
-            (SELECT gift_certificate_id FROM tag JOIN certificates_has_tags ON tag.id=certificates_has_tags.tag_id AND name = ?)
+            (SELECT gift_certificate_id FROM tag JOIN certificates_has_tags ON tag.id=certificates_has_tags.tag_id AND name = ?) ORDER BY 
             """;
 
     private JdbcTemplate jdbcTemplate;
@@ -90,9 +90,9 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     @Override
     public List<GiftCertificate> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteriaAndSortDirection) {
         if (searchCriteria.equals("tag")) {
-            return jdbcTemplate.query(SELECT_BY_TAG_NAME + "ORDER BY " + sortCriteriaAndSortDirection, new GiftCertificateRowMapper(), searchName);
+            return jdbcTemplate.query(SELECT_BY_TAG_NAME + sortCriteriaAndSortDirection, new GiftCertificateRowMapper(), searchName);
         }
-        return jdbcTemplate.query(SELECT_BY_PART_OF_NAME + " ORDER BY " + sortCriteriaAndSortDirection, new GiftCertificateRowMapper(), "%" + searchName + "%");
+        return jdbcTemplate.query(SELECT_BY_PART_OF_NAME + sortCriteriaAndSortDirection, new GiftCertificateRowMapper(), "%" + searchName + "%");
     }
 
     @Override

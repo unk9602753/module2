@@ -1,10 +1,12 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.ServiceException;
 import com.epam.esm.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,26 +27,26 @@ public class TagController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Tag> getTags() {
+    public List<Tag> getTags() throws ServiceException {
         return tagService.findAll();
     }
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Tag> getTagById(@PathVariable long id) {
+    public ResponseEntity<Tag> getTagById(@PathVariable long id) throws ServiceException {
         Optional<Tag> optTag = tagService.find(id);
         return new ResponseEntity<>(optTag.get(), HttpStatus.OK);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postTag(@RequestBody Tag tag) {
+    public void postTag(@Validated @RequestBody Tag tag) throws ServiceException {
         tagService.create(tag);
     }
 
     @DeleteMapping(value = "{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTag(@PathVariable long id) {
+    public void deleteTag(@PathVariable long id) throws ServiceException {
         tagService.delete(id);
     }
 }

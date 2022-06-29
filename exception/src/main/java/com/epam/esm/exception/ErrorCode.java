@@ -34,12 +34,41 @@ public enum ErrorCode {
     CODE_40027("exception.syntax.query"),
     CODE_40028("exception.create.tag"),
     CODE_40029("exception.delete.tag"),
-    CODE_40030("exception.not.found");
+    CODE_40030("exception.not.found.with.param"),
+
+    CODE_40031("exception.name.not.be.null"),
+    CODE_40032("exception.name.out.of.range"),
+    CODE_40033("exception.description.not.be.null"),
+    CODE_40034("exception.description.out.of.range"),
+    CODE_40035("exception.price.min.out.of.range"),
+    CODE_40036("exception.price.max.out.of.range"),
+    CODE_40037("exception.duration.min.out.of.range"),
+    CODE_40039("exception.criteria.not.valid"),
+    CODE_40040("exception.parse.field"),
+    CODE_40041("exception.parse.type"),
+    CODE_40042("exception.update.name.size"),
+    CODE_40043("exception.update.description.size"),
+    CODE_40044("exception.update.price.value"),
+    CODE_40045("exception.update.duration.value"),
+    CODE_40046("exception.parse.id"),
+    CODE_40047("exception.tag.name.null"),
+    CODE_40048("exception.tag.name.size"),
+    CODE_40038("exception.duration.max.out.of.range");
+
 
     String message;
 
     public static int getCode(ErrorCode errorCode){
         String name = errorCode.name();
         return Integer.parseInt(name.substring(name.indexOf("_")+1));
+    }
+
+    public static ErrorCode getErrorCode(String label) {
+        for (ErrorCode e : values()) {
+            if (e.message.equals(label)) {
+                return e;
+            }
+        }
+        return null;
     }
 }

@@ -6,10 +6,6 @@ public class ServiceException extends Exception {
 
     private ErrorCode errorCode;
 
-    public ServiceException(ErrorCode errorCode) {
-        this.errorCode = errorCode;
-    }
-
     public ServiceException(ErrorCode errorCode, long id){
         this.errorCode=errorCode;
         this.id = id;
@@ -19,7 +15,6 @@ public class ServiceException extends Exception {
         this.errorCode=errorCode;
         this.concreteMessage = concreteMessage;
     }
-
 
     public ErrorCode getErrorCode() {
         return errorCode;

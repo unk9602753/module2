@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -23,15 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DaoConfig.class)
-@ActiveProfiles("dev")
 class GiftCertificateDaoImplTest {
     @Autowired
-    GiftCertificateDao giftCertificateDao;
+    private GiftCertificateDao giftCertificateDao;
 
     @Autowired
-    TagDao tagDao;
+    private TagDao tagDao;
 
-    List<GiftCertificate> giftCertificates;
+    private List<GiftCertificate> giftCertificates;
 
     @BeforeEach
     void setUp() {
@@ -55,7 +53,7 @@ class GiftCertificateDaoImplTest {
     @Test
     void wrongInsert() {
         GiftCertificate giftCertificate = GiftCertificate.builder()
-                .name(null)
+                .name("certificate")
                 .description("description")
                 .price(1.1)
                 .duration(10)
@@ -117,7 +115,6 @@ class GiftCertificateDaoImplTest {
     void removeTagToGiftCertificate() {
         long id = giftCertificates.get(0).getId();
         long count = giftCertificateDao.removeTagToGiftCertificate(id);
-        assertTrue(count>0);
-
+        assertTrue(count<0);
     }
 }

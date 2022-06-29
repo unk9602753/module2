@@ -2,15 +2,13 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
-import com.epam.esm.entity.ErrorCode;
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.GiftCertificateDto;
+import com.epam.esm.exception.ErrorCode;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ServiceException;
 import com.epam.esm.service.GiftCertificateService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +25,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final TagDao tagDao;
 
     @Override
-    @SneakyThrows
-    public void delete(long id) {
+    public void delete(long id) throws ServiceException {
         int statement = giftCertificateDao.remove(id);
         if (statement == 0) {
             throw new ServiceException(ErrorCode.CODE_40020, id);
@@ -37,17 +34,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional
-    @SneakyThrows
-    public Optional<GiftCertificateDto> find(long id) {
+    public Optional<GiftCertificateDto> find(long id) throws ServiceException {
         Optional<GiftCertificate> giftCertificate = giftCertificateDao.find(id);
-        List<Tag> allTagsByCertificateId = tagDao.findAllTagsByCertificateId(id);
-        if (giftCertificate.isPresent()) {
-            GiftCertificateDto giftCertificateDto = new GiftCertificateDto(giftCertificate.get());
-            giftCertificateDto.setTags(allTagsByCertificateId);
-            return Optional.of(giftCertificateDto);
-        } else {
+        if (giftCertificate.isEmpty()) {
             throw new ServiceException(ErrorCode.CODE_40003, id);
         }
+        List<Tag> allTagsByCertificateId = tagDao.findAllTagsByCertificateId(id);
+        GiftCertificateDto giftCertificateDto = new GiftCertificateDto(giftCertificate.get());
+        giftCertificateDto.setTags(allTagsByCertificateId);
+        return Optional.of(giftCertificateDto);
     }
 
     @Override
@@ -57,46 +52,45 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    @SneakyThrows
-    public List<GiftCertificateDto> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria) {
-        if (!(searchCriteria.equals("tag") || searchCriteria.equals("certificate"))) throw new ServiceException(ErrorCode.CODE_40021,searchCriteria);
+    public List<GiftCertificateDto> findByCriteriaAndSort(String searchCriteria, String searchName, String sortCriteria) throws ServiceException {
+        if (!(searchCriteria.equals("tag") || searchCriteria.equals("certificate"))) {
+            throw new ServiceException(ErrorCode.CODE_40021, searchCriteria);
+        }
         String sortCriteriaAndSortDirection = sortCriteria.replace("-", " ");
+        if (!isValidSortParams(sortCriteriaAndSortDirection)) {
+            throw new ServiceException(ErrorCode.CODE_40039, sortCriteriaAndSortDirection);
+        }
         List<GiftCertificate> giftCertificates = giftCertificateDao.findByCriteriaAndSort(searchCriteria, searchName, sortCriteriaAndSortDirection);
-        if (giftCertificates.isEmpty()) throw new ServiceException(ErrorCode.CODE_40030, searchCriteria);
+        if (giftCertificates.isEmpty()) {
+            throw new ServiceException(ErrorCode.CODE_40030, searchCriteria + ", " + searchName);
+        }
         return mapToListOfDtos(giftCertificates);
     }
 
     @Override
     @Transactional
-    @SneakyThrows
     public void create(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = new GiftCertificate(giftCertificateDto);
         List<Tag> tags = giftCertificateDto.getTags();
-        if (isValidPriceAndDuration(giftCertificate)) {
-            setCreatedAndUpdatedDate(giftCertificate, LocalDateTime.now(), LocalDateTime.now());
-            long id = giftCertificateDao.insert(giftCertificate).longValue();
-            linkCertificateWithTags(tags, id);
-        } else {
-            throw new ServiceException(ErrorCode.CODE_40002);
-        }
+        setCreatedAndUpdatedDate(giftCertificate, LocalDateTime.now(), LocalDateTime.now());
+        long id = giftCertificateDao.insert(giftCertificate).longValue();
+        linkCertificateWithTags(tags, id);
     }
 
     @Override
     @Transactional
-    @SneakyThrows
-    public void update(GiftCertificateDto patch, long id) {
+    public void update(GiftCertificateDto patch, long id) throws ServiceException {
         Optional<GiftCertificate> optGift = giftCertificateDao.find(id);
         GiftCertificate certificate = new GiftCertificate(patch);
-        GiftCertificate updatedCertificate = updateObject(optGift.get(), certificate);
-        if (isValidPriceAndDuration(updatedCertificate)) {
-            setCreatedAndUpdatedDate(updatedCertificate, optGift.get().getCreateDate(), LocalDateTime.now());
-            List<Tag> tags = patch.getTags();
-            giftCertificateDao.update(updatedCertificate);
-            giftCertificateDao.removeTagToGiftCertificate(id);
-            linkCertificateWithTags(tags, id);
-        } else {
+        if (optGift.isEmpty()) {
             throw new ServiceException(ErrorCode.CODE_40001, id);
         }
+        GiftCertificate updatedCertificate = updateObject(optGift.get(), certificate, id);
+        setCreatedAndUpdatedDate(updatedCertificate, optGift.get().getCreateDate(), LocalDateTime.now());
+        List<Tag> tags = patch.getTags();
+        giftCertificateDao.update(updatedCertificate);
+        giftCertificateDao.removeTagToGiftCertificate(id);
+        linkCertificateWithTags(tags, id);
     }
 
     private void linkCertificateWithTags(List<Tag> tags, long certificateId) {
@@ -122,23 +116,26 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return dtoList;
     }
 
-    private boolean isValidPriceAndDuration(GiftCertificate giftCertificate) {
-        return NumberUtils.compare((int) giftCertificate.getPrice(), 0) > 0
-                && NumberUtils.compare(giftCertificate.getDuration(), 0) > 0;
-    }
-
-    private GiftCertificate updateObject(GiftCertificate certificate, GiftCertificate patch) {
-        if (patch.getName() != null) {
+    private GiftCertificate updateObject(GiftCertificate certificate, GiftCertificate patch, long id) throws ServiceException {
+        if ((patch.getName() != null) && (patch.getName().length() < 40)) {
             certificate.setName(patch.getName());
+        } else if ((patch.getName() != null) && (patch.getName().length() > 40)) {
+            throw new ServiceException(ErrorCode.CODE_40042, id);
         }
-        if (patch.getDescription() != null) {
+        if ((patch.getDescription() != null) && (patch.getDescription().length() < 40)) {
             certificate.setDescription(patch.getDescription());
+        } else if ((patch.getDescription() != null) && (patch.getDescription().length() > 40)) {
+            throw new ServiceException(ErrorCode.CODE_40043, id);
         }
-        if (patch.getPrice() != 0) {
+        if ((patch.getPrice() != 0) && (patch.getPrice() >= 1 && patch.getPrice() <= 10000)) {
             certificate.setPrice(patch.getPrice());
+        } else if ((patch.getPrice() != 0) && (patch.getPrice() < 1 || patch.getPrice() > 10000)) {
+            throw new ServiceException(ErrorCode.CODE_40044, id);
         }
-        if (patch.getDuration() != 0) {
+        if ((patch.getDuration() != 0) && (patch.getDuration() >= 5 && patch.getDuration() <= 365)) {
             certificate.setDuration(patch.getDuration());
+        } else if ((patch.getDuration() != 0) && (patch.getDuration() < 5 || patch.getDuration() > 365)) {
+            throw new ServiceException(ErrorCode.CODE_40045, id);
         }
         return certificate;
     }
@@ -146,5 +143,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private void setCreatedAndUpdatedDate(GiftCertificate giftCertificate, LocalDateTime created, LocalDateTime updated) {
         giftCertificate.setCreateDate(created);
         giftCertificate.setLastUpdateDate(updated);
+    }
+
+    private boolean isValidSortParams(String param) {
+        if(param.substring(param.length()-1).equals(",")){
+            return false;
+        }
+        List<String> list = Arrays.asList("asc", "desc", "id", "name", "description", "price", "duration", "create_date", "last_update_date");
+        String replace = param.replace(",", " ");
+        String[] s = replace.split(" ");
+        Optional<String> first = Arrays.stream(s).filter(str -> !list.contains(str)).findFirst();
+        return first.isEmpty();
     }
 }

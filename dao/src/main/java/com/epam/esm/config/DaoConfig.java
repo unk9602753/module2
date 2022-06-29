@@ -7,17 +7,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Objects;
 
+/**
+ * Representing dao configuration: dataSource and JdbcTemplate
+ */
 @Configuration
 @ComponentScan("com.epam.esm")
-@PropertySource("classpath:${spring.profiles.active}-connection.properties")
 public class DaoConfig {
     private ConfigurableEnvironment environment;
 
@@ -27,19 +30,34 @@ public class DaoConfig {
     }
 
     @Bean
-    public DataSource dataSource(HikariConfig hikariConfig){
-        return new HikariDataSource(hikariConfig);
-    }
-
-    @Bean
-    public HikariConfig hikariConfig() {
+    @Profile("dev")
+    public HikariConfig hikariConfig() throws IOException {
+        environment.getPropertySources().addFirst(new ResourcePropertySource("classpath:dev-connection.properties"));
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(environment.getProperty("url"));
         hikariConfig.setUsername(environment.getProperty("username"));
         hikariConfig.setPassword(environment.getProperty("password"));
         hikariConfig.setDriverClassName(environment.getProperty("className"));
-        hikariConfig.setMaximumPoolSize(Integer.parseInt(environment.getProperty("poolSize")));
+        hikariConfig.setMaximumPoolSize(Integer.parseInt(Objects.requireNonNull(environment.getProperty("poolSize"))));
         return hikariConfig;
+    }
+
+    @Bean
+    @Profile("dev")
+    public DataSource dataSource(HikariConfig hikariConfig) {
+        return new HikariDataSource(hikariConfig);
+    }
+
+    @Bean
+    @Profile("prod")
+    public DataSource embeddedDataSource() throws IOException {
+        environment.getPropertySources().addFirst(new ResourcePropertySource("classpath:prod-connection.properties"));
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setUrl(environment.getProperty("url"));
+        dataSource.setUsername(environment.getProperty("username"));
+        dataSource.setPassword(environment.getProperty("password"));
+        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("className")));
+        return dataSource;
     }
 
     @Bean

@@ -3,4 +3,6 @@ include 'entity'
 include 'dao'
 include 'controller'
 include 'service'
+include 'exception'
+include 'dto'
 

@@ -2,13 +2,13 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.ServiceException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -29,14 +29,14 @@ class TagServiceImplTest {
     @InjectMocks
     private TagServiceImpl service;
 
-    List<Tag> tags =  Arrays.asList(
+    private List<Tag> tags =  Arrays.asList(
             new Tag(1, "tag1"),
             new Tag(2, "tag2"),
             new Tag(3, "tag3"),
             new Tag(4, "tag4"),
             new Tag(5, "tag5")
     );
-    
+
     @BeforeEach
     public void setUp() {
         service=new TagServiceImpl(tagDao);
@@ -48,7 +48,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void find() {
+    void find() throws ServiceException {
         Tag tag = new Tag(1, "tag");
         when(tagDao.find(1)).thenReturn(Optional.of(tag));
         Optional<Tag> result = service.find(1);
@@ -65,7 +65,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void delete() throws ServiceException {
         long id = 1;
         when(tagDao.remove(isA(Long.class))).thenReturn(1);
         service.delete(id);

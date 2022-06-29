@@ -1,0 +1,3 @@
+rest
+annotations controller service component repository restcontroller
+prepared statement statement

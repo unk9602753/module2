@@ -21,13 +21,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES;
-
+/**
+ * Representing controller module configuration. Configure converter, locale, ResourceBundleMessageSource
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.epam.esm")
 public class WebConfig extends AcceptHeaderLocaleResolver implements WebMvcConfigurer {
-    private List<Locale> locales = Arrays.asList(new Locale("ru"), new Locale("en"));
+    private final List<Locale> locales = Arrays.asList(new Locale("ru"), new Locale("en"));
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -40,7 +41,6 @@ public class WebConfig extends AcceptHeaderLocaleResolver implements WebMvcConfi
         mappingJackson2HttpMessageConverter.setObjectMapper(mapper);
         converters.add(mappingJackson2HttpMessageConverter);
     }
-
 
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
