@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group 'com.epam.esm.service'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':dao')
+    implementation project(':entity')
+    implementation project(':exception')
+}
+
+test {
+    useJUnitPlatform()
+}
